@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ecf.containerFactory">
+      <containerFactory
+            class="org.eclipse.ecf.provider.jms.mqtt.container.MqttJMSClientContainer$MqttJMSClientContainerInstantiator"
+            name="ecf.jms.mqtt.client"
+            server="false">
+      </containerFactory>
+   </extension>
+   <extension
+         point="org.eclipse.ecf.containerFactory">
+      <containerFactory
+            class="org.eclipse.ecf.provider.jms.mqtt.container.MqttJMSServerContainer$MqttJMSServerContainerInstantiator"
+            hidden="false"
+            name="ecf.jms.mqtt.manager"
+            server="true">
+      </containerFactory>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.ecf.provider.jms.mqtt.container.MqttJMSClientContainer"
+            class="org.eclipse.ecf.provider.remoteservice.generic.RemoteServiceContainerAdapterFactory">
+         <adapter type="org.eclipse.ecf.remoteservice.IRemoteServiceContainerAdapter"/>
+      </factory>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.ecf.provider.jms.mqtt.container.MqttJMSServerContainer"
+            class="org.eclipse.ecf.provider.remoteservice.generic.RemoteServiceContainerAdapterFactory">
+         <adapter type="org.eclipse.ecf.remoteservice.IRemoteServiceContainerAdapter"/>
+      </factory>
+   </extension>
+
+
+
+</plugin>
