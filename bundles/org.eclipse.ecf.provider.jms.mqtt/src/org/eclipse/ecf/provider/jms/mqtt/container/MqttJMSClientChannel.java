@@ -53,6 +53,11 @@ public class MqttJMSClientChannel extends AbstractJMSClientChannel {
 	}
 
 	@Override
+	public boolean isConnected() {
+		return (this.mqttClient != null);
+	}
+
+	@Override
 	protected Serializable setupJMS(JMSID targetID, Object data)
 			throws ECFException {
 		// Create mqttClient
@@ -72,7 +77,6 @@ public class MqttJMSClientChannel extends AbstractJMSClientChannel {
 			// Subscribe to topic
 			this.targetID = targetID;
 			this.mqttClient.subscribe(this.targetID.getTopicOrQueueName());
-			this.connected = true;
 			return (Serializable) data;
 		} catch (MqttException e) {
 			throw new ECFException("Could not connect to targetID="
@@ -93,19 +97,19 @@ public class MqttJMSClientChannel extends AbstractJMSClientChannel {
 	}
 
 	public void disconnect() {
-		synchronized (this.waitResponse) {
-			if (this.mqttClient != null) {
-				try {
-					this.mqttClient.disconnect();
-					this.mqttClient.close();
-				} catch (MqttException e) {
-					// Should not occur
-					e.printStackTrace();
-				}
-				this.mqttClient = null;
-				this.targetID = null;
-				this.mqttConnectOptions = null;
+		if (this.mqttClient != null) {
+			try {
+				this.mqttClient.disconnect();
+				this.mqttClient.close();
+			} catch (MqttException e) {
+				// Should not occur
+				e.printStackTrace();
 			}
+			this.mqttClient = null;
+			this.targetID = null;
+			this.mqttConnectOptions = null;
+		}
+		synchronized (this.waitResponse) {
 			waitResponse.notifyAll();
 		}
 		fireListenersDisconnect(new ConnectionEvent(this, null));

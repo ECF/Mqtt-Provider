@@ -48,19 +48,20 @@ public class MqttJMSServerContainer extends AbstractJMSServer {
 				JMSID serverID = null;
 				String mqttClientId = null;
 				if (args == null)
-					throw new NullPointerException("Args cannot be null");
-				if (args.length > 0 && (args[0] instanceof Map)) {
-					@SuppressWarnings("rawtypes")
-					Map map = (Map) args[0];
-					Object o = map.get(ID_PARAM);
-					if (o != null && o instanceof String)
-						serverID = getJMSIDFromParameter(o);
-					o = map.get(MQTT_CLIENTID_PARAM);
-					if (o != null && o instanceof String)
-						mqttClientId = (String) o;
-				} else
-					serverID = (args == null || args.length < 1) ? getJMSIDFromParameter((String) DEFAULT_SERVER_ID)
-							: getJMSIDFromParameter(args[0]);
+					serverID = getJMSIDFromParameter((String) DEFAULT_SERVER_ID);
+				else if (args.length > 0) {
+					if (args[0] instanceof Map) {
+						@SuppressWarnings("rawtypes")
+						Map map = (Map) args[0];
+						Object o = map.get(ID_PARAM);
+						if (o != null && o instanceof String)
+							serverID = getJMSIDFromParameter(o);
+						o = map.get(MQTT_CLIENTID_PARAM);
+						if (o != null && o instanceof String)
+							mqttClientId = (String) o;
+					} else
+						serverID = getJMSIDFromParameter(args[0]);
+				}
 				Integer ka = null;
 				if (args != null && args.length > 1)
 					ka = getIntegerFromArg(args[1]);

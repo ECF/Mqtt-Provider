@@ -64,7 +64,6 @@ public class MqttJMSServerChannel extends AbstractJMSServerChannel {
 				this.mqttClient.connect(this.mqttConnectOptions);
 			// Subscribe to topic
 			this.mqttClient.subscribe(targetID.getTopicOrQueueName());
-			this.connected = true;
 		} catch (MqttException e) {
 			throw new ECFException("Could not connect to targetID"
 					+ targetID.getName());
@@ -86,19 +85,24 @@ public class MqttJMSServerChannel extends AbstractJMSServerChannel {
 	}
 
 	@Override
+	public boolean isConnected() {
+		return (this.mqttClient != null);
+	}
+
+	@Override
 	public void disconnect() {
-		synchronized (this.waitResponse) {
-			if (this.mqttClient != null) {
-				try {
-					this.mqttClient.disconnect();
-					this.mqttClient.close();
-				} catch (MqttException e) {
-					// Should not occur
-					e.printStackTrace();
-				}
-				this.mqttClient = null;
-				this.mqttConnectOptions = null;
+		if (this.mqttClient != null) {
+			try {
+				this.mqttClient.disconnect();
+				this.mqttClient.close();
+			} catch (MqttException e) {
+				// Should not occur
+				e.printStackTrace();
 			}
+			this.mqttClient = null;
+			this.mqttConnectOptions = null;
+		}
+		synchronized (this.waitResponse) {
 			waitResponse.notifyAll();
 		}
 		fireListenersDisconnect(new ConnectionEvent(this, null));
