@@ -8,6 +8,11 @@ import org.eclipse.ecf.tests.provider.jms.JMSContainerAbstractTestCase;
 
 public class MqttContainerTest extends JMSContainerAbstractTestCase {
 
+	@Override
+	protected void setupBroker() throws Exception {
+		// No broker
+	}
+	
 	protected String getClientContainerName() {
 		return Mqtt.CLIENT_CONTAINER_NAME;
 	}
