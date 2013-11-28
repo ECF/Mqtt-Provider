@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cq:componentQuery xmlns:cq="http://www.eclipse.org/buckminster/CQuery-1.0" resourceMap="http://github.com/ECF/Releng/raw/master/ecf.rmap">
+    <cq:rootRequest name="org.eclipse.ecf.provider.jms.mqtt.feature" componentType="eclipse.feature"/>
+    <cq:property key="target.arch" value="*"/>
+    <cq:property key="target.os" value="*"/>
+    <cq:property key="target.ws" value="*"/>
+
+    <!-- this is us -->
+    <cq:advisorNode namePattern="^org\.eclipse\.ecf\.provider\.jms\.mqtt(\..+)?" useTargetPlatform="false" useWorkspace="false"/>
+    <cq:advisorNode namePattern="^org\.eclipse\.ecf\.provider\.jms\.mqtt\.feature?" useTargetPlatform="false" useWorkspace="false"/>
+
+    <cq:advisorNode namePattern="^org\.eclipse\.ecf\.tests\.provider\.jms\.mqtt(\..+)?" useTargetPlatform="false" useWorkspace="false"/>
+    
+	<!-- this feature references ECF itself (in a specific version), thus skip it -->
+    <cq:advisorNode namePattern="^org\.eclipse\.equinox\.p2\.user\.ui$" skipComponent="true" useTargetPlatform="false"/>
+
+	<!-- the rest we want binary only -->
+    <cq:advisorNode namePattern=".*" useTargetPlatform="true" skipComponent="false" mutableLevel="REJECT" sourceLevel="REJECT"/>
+</cq:componentQuery>
