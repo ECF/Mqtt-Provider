@@ -8,7 +8,7 @@
 		<dependency name="org.eclipse.equinox.concurrent" componentType="osgi.bundle"/>
 		<dependency name="org.eclipse.jdt" componentType="eclipse.feature"/>
 		<dependency name="org.eclipse.ecf.osgi.services.feature" componentType="eclipse.feature"/>
-		<dependency name="org.eclipse.ecf.tests.provider.jms.activemq" componentType="osgi.bundle"/>
+		<dependency name="org.eclipse.ecf.tests.provider.jms.mqtt" componentType="osgi.bundle"/>
 		<dependency name="org.eclipse.ecf.provider.jslp" componentType="osgi.bundle"/>
 		<dependency name="ch.ethz.iks.slp" componentType="osgi.bundle"/>
 	</dependencies>
