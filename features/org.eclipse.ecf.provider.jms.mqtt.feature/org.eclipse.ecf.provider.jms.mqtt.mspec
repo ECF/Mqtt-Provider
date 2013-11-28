@@ -7,6 +7,7 @@
     <md:mspecNode namePattern="^org\.eclipse\.ecf\.provider\.jms\.mqtt(\..+)?" materializer="workspace"/>
     <md:mspecNode namePattern="^org\.eclipse\.ecf\.provider\.jms\.mqtt\.feature?" materializer="workspace"/>
 
+    <md:mspecNode namePattern="^org\.eclipse\.ecf\.tests\.provider\.jms?" materializer="workspace"/>
     <md:mspecNode namePattern="^org\.eclipse\.ecf\.tests\.provider\.jms\.mqtt(\..+)?" materializer="workspace"/>
 
     <md:mspecNode namePattern=".*" installLocation="${targetPlatformPath}"/>
