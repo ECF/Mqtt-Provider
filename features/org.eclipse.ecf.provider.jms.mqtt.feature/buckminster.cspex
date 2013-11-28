@@ -13,6 +13,7 @@
 		 -->
 		<dependency name="org.eclipse.ecf.provider.jslp" componentType="osgi.bundle"/>
 		<dependency name="ch.ethz.iks.slp" componentType="osgi.bundle"/>
+		<dependency name="javax.jms" componentType="osgi.bundle"/>
 	</dependencies>
 	<generators>
 		<!-- Place your Generators here -->
