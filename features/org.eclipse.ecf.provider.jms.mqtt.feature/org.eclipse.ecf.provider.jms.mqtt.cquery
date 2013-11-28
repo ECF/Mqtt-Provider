@@ -9,7 +9,6 @@
     <cq:advisorNode namePattern="^org\.eclipse\.ecf\.provider\.jms\.mqtt(\..+)?" useTargetPlatform="false" useWorkspace="false"/>
     <cq:advisorNode namePattern="^org\.eclipse\.ecf\.provider\.jms\.mqtt\.feature?" useTargetPlatform="false" useWorkspace="false"/>
 
-    <cq:advisorNode namePattern="^org\.eclipse\.ecf\.tests\.provider\.jms?" useTargetPlatform="false" useWorkspace="false"/>
     <cq:advisorNode namePattern="^org\.eclipse\.ecf\.tests\.provider\.jms\.mqtt(\..+)?" useTargetPlatform="false" useWorkspace="false"/>
     
 	<!-- this feature references ECF itself (in a specific version), thus skip it -->
