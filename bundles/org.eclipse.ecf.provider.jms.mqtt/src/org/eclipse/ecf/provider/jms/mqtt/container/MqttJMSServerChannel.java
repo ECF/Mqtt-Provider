@@ -65,7 +65,7 @@ public class MqttJMSServerChannel extends AbstractJMSServerChannel {
 			// Subscribe to topic
 			this.mqttClient.subscribe(targetID.getTopicOrQueueName());
 		} catch (MqttException e) {
-			throw new ECFException("Could not connect to targetID"
+			throw new ECFException("Could not connect to targetID="
 					+ targetID.getName());
 		}
 	}

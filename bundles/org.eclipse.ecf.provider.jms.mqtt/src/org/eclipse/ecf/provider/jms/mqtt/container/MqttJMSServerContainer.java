@@ -20,7 +20,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 public class MqttJMSServerContainer extends AbstractJMSServer {
 
-	public static final String DEFAULT_SERVER_ID = "tcp://localhost:1883/exampleTopic";
+	public static final String DEFAULT_SERVER_ID = "tcp://m2m.eclipse.org:1883/exampleTopic";
 
 	public static final String ID_PARAM = "id";
 	public static final String MQTT_CLIENTID_PARAM = "mqttClientId";
