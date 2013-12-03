@@ -13,6 +13,7 @@ import org.eclipse.ecf.provider.comm.ConnectionEvent;
 import org.eclipse.ecf.provider.comm.ISynchAsynchEventHandler;
 import org.eclipse.ecf.provider.jms.channel.AbstractJMSServerChannel;
 import org.eclipse.ecf.provider.jms.identity.JMSID;
+import org.eclipse.ecf.remoteservice.util.ObjectSerializationUtil;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -70,12 +71,22 @@ public class MqttJMSServerChannel extends AbstractJMSServerChannel {
 		}
 	}
 
+	private static final ObjectSerializationUtil osu = new ObjectSerializationUtil();
+
 	@Override
 	protected void createAndSendMessage(Serializable object,
 			String jmsCorrelationId) throws JMSException {
+		byte[] serializedMessage;
+		try {
+			serializedMessage = osu.serializeToBytes(object);
+		} catch (IOException e) {
+			JMSException jmse = new JMSException(e.getMessage());
+			jmse.setStackTrace(e.getStackTrace());
+			throw jmse;
+		}
 		MQTTMessage.publish(this.mqttClient,
-				((JMSID) getLocalID()).getTopicOrQueueName(), object,
-				jmsCorrelationId);
+				((JMSID) getLocalID()).getTopicOrQueueName(),
+				serializedMessage, jmsCorrelationId);
 	}
 
 	public Client createClient(ID remoteID) {
@@ -111,7 +122,7 @@ public class MqttJMSServerChannel extends AbstractJMSServerChannel {
 
 	protected Object readObject(byte[] bytes) throws IOException,
 			ClassNotFoundException {
-		return MQTTMessage.deserialize(bytes);
+		return osu.deserializeFromBytes(bytes);
 	}
 
 	void handleMessageArrived(String topic, MqttMessage message) {
@@ -138,16 +149,15 @@ public class MqttJMSServerChannel extends AbstractJMSServerChannel {
 							+ " is duplicate, so not processing");
 			return;
 		}
-		byte[] messageBytes = message.getPayload();
-		MQTTMessage m = null;
-		try {
-			m = (MQTTMessage) readObject(messageBytes);
-		} catch (Exception e) {
-			Trace.throwing("org.eclipse.ecf.provider.jms.mqtt", "throwing",
-					this.getClass(), "handleMessageArrived", e);
+		MQTTMessage m = MQTTMessage.deserialize(message.getPayload());
+		if (m == null) {
+			Trace.exiting("org.eclipse.ecf.provider.jms.mqtt", "exiting",
+					this.getClass(), "handleMessageArrived");
+			// XXX here is where the MqttMessage payload could be passed to some
+			// other interface
 			return;
-		}
-		handleMessage(m.getData(), m.getJMSCorrelationId());
+		} else
+			handleMessage(m.getData(), m.getCorrelationId());
 	}
 
 	@Override
