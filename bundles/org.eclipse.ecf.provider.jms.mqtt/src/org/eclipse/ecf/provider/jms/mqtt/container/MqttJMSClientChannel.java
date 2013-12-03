@@ -98,7 +98,7 @@ public class MqttJMSClientChannel extends AbstractJMSClientChannel {
 			jmse.setStackTrace(e.getStackTrace());
 			throw jmse;
 		}
-		MQTTMessage.publish(this.mqttClient,
+		MQTTMessage.send(this.mqttClient,
 				this.targetID.getTopicOrQueueName(), serializedMessage,
 				jmsCorrelationId);
 	}
@@ -157,7 +157,7 @@ public class MqttJMSClientChannel extends AbstractJMSClientChannel {
 							+ " is duplicate, so not processing");
 			return;
 		}
-		MQTTMessage m = MQTTMessage.deserialize(message.getPayload());
+		MQTTMessage m = MQTTMessage.receive(message.getPayload());
 		if (m == null) {
 			Trace.exiting("org.eclipse.ecf.provider.jms.mqtt", "exiting",
 					this.getClass(), "handleMessageArrived");

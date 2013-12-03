@@ -31,11 +31,15 @@ public class MQTTMessage {
 		return data;
 	}
 
-	static void publish(final MqttClient client, final String topic,
+	public static void send(final MqttClient client, final String topic,
 			byte[] message, String jmsCorrelationId) throws JMSException {
 		try {
-			final MqttMessage m = new MqttMessage(getECFPayload(message,
-					jmsCorrelationId));
+			ByteArrayOutputStream bouts = new ByteArrayOutputStream();
+			bouts.write(ECFPREFIX);
+			ObjectOutputStream oos = new ObjectOutputStream(bouts);
+			oos.writeObject(jmsCorrelationId);
+			oos.writeObject(message);
+			final MqttMessage m = new MqttMessage(bouts.toByteArray());
 			m.setRetained(false);
 			new Thread(new Runnable() {
 				public void run() {
@@ -57,26 +61,15 @@ public class MQTTMessage {
 
 	private static byte[] ECFPREFIX = { 27, 69, 67, 70 };
 
-	private static byte[] getECFPayload(byte[] message, String jmsCorrelationId)
-			throws IOException {
-		ByteArrayOutputStream bouts = new ByteArrayOutputStream();
-		bouts.write(ECFPREFIX);
-		ObjectOutputStream oos = new ObjectOutputStream(bouts);
-		oos.writeObject(jmsCorrelationId);
-		oos.writeObject(message);
-		return bouts.toByteArray();
-	}
-
-	static MQTTMessage deserialize(byte[] bytes) {
+	public static MQTTMessage receive(byte[] bytes) {
 		// Check the first four bytes
 		if (!checkMessagePrefix(bytes))
 			return null;
 		// else it's an ECF message
 		ByteArrayInputStream bins = new ByteArrayInputStream(bytes,
 				ECFPREFIX.length, bytes.length - ECFPREFIX.length);
-		ObjectInputStream oos;
 		try {
-			oos = new ObjectInputStream(bins);
+			ObjectInputStream oos = new ObjectInputStream(bins);
 			return new MQTTMessage((String) oos.readObject(),
 					(byte[]) oos.readObject());
 		} catch (IOException e) {
