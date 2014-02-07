@@ -246,7 +246,7 @@ More specifically:
    </license>
 
    <requires>
-      <import feature="org.eclipse.ecf.provider.jms.feature" version="2.4.0.qualifier"/>
+      <import feature="org.eclipse.ecf.provider.jms.feature" version="2.4" match="compatible"/>
    </requires>
 
    <plugin
