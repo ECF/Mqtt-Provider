@@ -14,6 +14,8 @@
 		<dependency name="org.eclipse.ecf.tests.provider.jms" componentType="osgi.bundle"/>
 		<dependency name="org.eclipse.ecf.tests.provider.jms.mqtt" componentType="osgi.bundle"/>
 		-->
+		<dependency name="org.eclipse.ecf.provider" componentType="osgi.bundle"/>
+		<dependency name="org.eclipse.ecf.provider.remoteservice" componentType="osgi.bundle"/>
 		<dependency name="org.eclipse.ecf.provider.jslp" componentType="osgi.bundle"/>
 		<dependency name="ch.ethz.iks.slp" componentType="osgi.bundle"/>
 		<dependency name="javax.jms" componentType="osgi.bundle"/>
