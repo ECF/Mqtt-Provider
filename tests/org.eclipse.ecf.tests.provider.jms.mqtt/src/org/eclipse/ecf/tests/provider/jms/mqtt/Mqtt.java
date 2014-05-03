@@ -15,7 +15,7 @@ public interface Mqtt {
 
 	public static final String CLIENT_CONTAINER_NAME = "ecf.jms.mqtt.client";
 	public static final String SERVER_CONTAINER_NAME = "ecf.jms.mqtt.manager";
-	public static final String TARGET_NAME = System.getProperty("org.eclipse.ecf.tests.provider.jms.mqtt", "tcp://m2m.eclipse.org:1883/exampleTopic");
+	public static final String TARGET_NAME = System.getProperty("org.eclipse.ecf.tests.provider.jms.mqtt", "tcp://iot.eclipse.org:1883/exampleTopic");
 	public static final String NAMESPACE_NAME = "ecf.namespace.jmsid";
 
 }
