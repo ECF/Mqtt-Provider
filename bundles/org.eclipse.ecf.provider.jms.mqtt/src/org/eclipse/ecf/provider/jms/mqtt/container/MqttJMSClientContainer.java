@@ -27,7 +27,6 @@ public class MqttJMSClientContainer extends AbstractJMSClient {
 			GenericContainerInstantiator {
 		public static final String[] mqttIntents = { "MQTT" };
 		public static final String ID_PARAM = "id";
-		public static final String KEEPALIVE_PARAM = "keepAlive";
 
 		private JMSID getJMSIDFromParameter(Object p) {
 			if (p instanceof String) {
@@ -39,52 +38,45 @@ public class MqttJMSClientContainer extends AbstractJMSClient {
 				return null;
 		}
 
-		@SuppressWarnings("rawtypes")
 		public IContainer createInstance(ContainerTypeDescription description,
 				Object[] args) throws ContainerCreateException {
 			try {
 				JMSID clientID = null;
-				Integer ka = null;
-				Map props = null;
 				if (args == null)
 					clientID = getJMSIDFromParameter(MqttClient
 							.generateClientId());
-				else if (args.length > 0) {
-					if (args[0] instanceof Map) {
-						props = (Map) args[0];
-						Object o = props.get(ID_PARAM);
-						if (o != null && o instanceof String)
-							clientID = getJMSIDFromParameter(o);
-						o = props.get(KEEPALIVE_PARAM);
-						if (o != null)
-							ka = getIntegerFromArg(o);
-					} else {
-						clientID = getJMSIDFromParameter(args[0]);
-						if (args.length > 1) 
-							ka = getIntegerFromArg(args[1]);
-					}
-				}
+				else if (args.length > 0 && (args[0] instanceof Map)) {
+					@SuppressWarnings("rawtypes")
+					Map map = (Map) args[0];
+					Object o = map.get(ID_PARAM);
+					if (o != null && o instanceof String)
+						clientID = getJMSIDFromParameter(o);
+				} else if (args.length > 0)
+					clientID = getJMSIDFromParameter(args[0]);
 				if (clientID == null)
 					clientID = getJMSIDFromParameter(MqttClient
 							.generateClientId());
+				Integer ka = null;
+				if (args != null && args.length > 1)
+					ka = getIntegerFromArg(args[1]);
 				if (ka == null)
 					ka = new Integer(MqttJMSServerContainer.DEFAULT_KEEPALIVE);
 				return new MqttJMSClientContainer(new JMSContainerConfig(
-						clientID, ka, props));
+						clientID, ka));
 			} catch (Exception e) {
-				ContainerCreateException t = new ContainerCreateException(
+				throw new ContainerCreateException(
 						"Exception creating activemq client container", e);
-				t.setStackTrace(e.getStackTrace());
-				throw t;
 			}
 		}
 
 		public String[] getSupportedIntents(ContainerTypeDescription description) {
 			List<String> results = new ArrayList<String>();
-			for (int i = 0; i < genericProviderIntents.length; i++) 
+			for (int i = 0; i < genericProviderIntents.length; i++) {
 				results.add(genericProviderIntents[i]);
-			for (int i = 0; i < mqttIntents.length; i++) 
+			}
+			for (int i = 0; i < mqttIntents.length; i++) {
 				results.add(mqttIntents[i]);
+			}
 			return (String[]) results.toArray(new String[] {});
 		}
 
