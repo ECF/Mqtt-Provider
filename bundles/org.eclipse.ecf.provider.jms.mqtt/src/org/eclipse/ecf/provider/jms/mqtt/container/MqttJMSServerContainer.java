@@ -42,33 +42,36 @@ public class MqttJMSServerContainer extends AbstractJMSServer {
 						JMSNamespace.NAME, DEFAULT_SERVER_ID);
 		}
 
+		@SuppressWarnings("rawtypes")
 		public IContainer createInstance(ContainerTypeDescription description,
 				Object[] args) throws ContainerCreateException {
 			try {
 				JMSID serverID = null;
 				String mqttClientId = null;
+				Map props = null;
+				Integer ka = null;
 				if (args == null)
 					serverID = getJMSIDFromParameter((String) DEFAULT_SERVER_ID);
 				else if (args.length > 0) {
 					if (args[0] instanceof Map) {
-						@SuppressWarnings("rawtypes")
-						Map map = (Map) args[0];
-						Object o = map.get(ID_PARAM);
+						props = (Map) args[0];
+						Object o = props.get(ID_PARAM);
 						if (o != null && o instanceof String)
 							serverID = getJMSIDFromParameter(o);
-						o = map.get(MQTT_CLIENTID_PARAM);
+						o = props.get(MQTT_CLIENTID_PARAM);
 						if (o != null && o instanceof String)
 							mqttClientId = (String) o;
-					} else
+						
+					} else {
 						serverID = getJMSIDFromParameter(args[0]);
+						if (args.length > 1)
+							ka = getIntegerFromArg(args[1]);
+					}
 				}
-				Integer ka = null;
-				if (args != null && args.length > 1)
-					ka = getIntegerFromArg(args[1]);
 				if (ka == null)
 					ka = new Integer(DEFAULT_KEEPALIVE);
 				MqttJMSServerContainer server = new MqttJMSServerContainer(
-						new JMSContainerConfig(serverID, ka.intValue(), null),
+						new JMSContainerConfig(serverID, ka.intValue(), props),
 						mqttClientId, new MqttConnectOptions());
 				server.start();
 				return server;
