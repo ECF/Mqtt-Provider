@@ -14,8 +14,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ecf.tests.provider.jms,
  org.eclipse.ecf.tests.osgi.services.distribution;bundle-version="1.0.0",
  org.junit;bundle-version="3.8.2",
- org.eclipse.ecf.osgi.services.distribution;bundle-version="1.0.0",
- org.eclipse.equinox.concurrent;bundle-version="1.0.0",
- org.eclipse.ecf.provider.jmdns;bundle-version="4.1.0"
+ org.eclipse.ecf.osgi.services.distribution;bundle-version="1.0.0"
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
