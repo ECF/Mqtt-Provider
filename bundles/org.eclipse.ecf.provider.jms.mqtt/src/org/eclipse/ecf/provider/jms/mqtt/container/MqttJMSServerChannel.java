@@ -55,7 +55,7 @@ public class MqttJMSServerChannel extends AbstractJMSServerChannel {
 			if (this.mqttClientId == null)
 				this.mqttClientId = MqttClient.generateClientId();
 			this.mqttClient = new MqttClient(targetID.getBroker(),
-					MqttClient.generateClientId());
+					this.mqttClientId);
 			// Set callback
 			this.mqttClient.setCallback(callback);
 			// Connect to broker with connectOpts
