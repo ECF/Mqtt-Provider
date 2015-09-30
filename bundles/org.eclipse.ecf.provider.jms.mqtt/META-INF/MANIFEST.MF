@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %plugin.name
-Bundle-SymbolicName: org.eclipse.ecf.provider.jms.mqtt;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.eclipse.ecf.provider.jms.mqtt
+Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: %plugin.provider
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: javax.jms;version="1.1.0",
@@ -12,11 +12,16 @@ Import-Package: javax.jms;version="1.1.0",
  org.eclipse.ecf.provider.jms.channel;version="1.5.0",
  org.eclipse.ecf.provider.jms.container;version="1.5.0",
  org.eclipse.ecf.provider.jms.identity;version="1.5.0",
- org.eclipse.ecf.provider.remoteservice.generic;version="4.0.0"
+ org.eclipse.ecf.provider.remoteservice.generic;version="4.0.0",
+ org.eclipse.ecf.remoteservice;version="7.2.0",
+ org.eclipse.ecf.remoteservice.provider;version="1.0.0",
+ org.eclipse.ecf.remoteservice.util;version="8.1.0",
+ org.osgi.framework
 Require-Bundle: org.eclipse.equinox.common,
- org.eclipse.ecf;bundle-version="3.2.0",
- org.eclipse.ecf.remoteservice;bundle-version="8.2.0"
+ org.eclipse.ecf;bundle-version="3.2.0"
 Bundle-ClassPath: .,
  lib/org.eclipse.paho.client.mqttv3_1.0.2.jar
 Bundle-Localization: plugin
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.eclipse.ecf.provider.jms.mqtt.Activator
 
