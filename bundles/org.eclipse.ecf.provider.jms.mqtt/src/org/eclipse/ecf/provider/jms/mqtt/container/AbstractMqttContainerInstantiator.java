@@ -28,9 +28,8 @@ public abstract class AbstractMqttContainerInstantiator extends AbstractJMSConta
 
 	public static final String MQTTCONNECTOPTIONS_PARAM = "mqttconnectoptions";
 
-	public AbstractMqttContainerInstantiator(List<String> exporterConfigs,
-			Map<String, List<String>> exporterConfigToImporterConfig) {
-		super(exporterConfigs, exporterConfigToImporterConfig);
+	public AbstractMqttContainerInstantiator(String exporter, String importer) {
+		super(exporter, importer);
 	}
 
 	protected abstract IContainer createMqttContainer(JMSContainerConfig config, MqttConnectOptions options,
@@ -61,11 +60,12 @@ public abstract class AbstractMqttContainerInstantiator extends AbstractJMSConta
 	public IContainer createInstance(ContainerTypeDescription description, Map<String, ?> parameters)
 			throws ContainerCreateException {
 		try {
-			JMSID jmsID = createContainerID(parameters);
-			Integer ka = getKeepAlive(parameters, new Integer(MqttJMSServerContainer.DEFAULT_KEEPALIVE));
-			MqttConnectOptions options = getParameterValue(parameters, MQTTCONNECTOPTIONS_PARAM,
-					MqttConnectOptions.class, new MqttConnectOptions());
-			return createMqttContainer(new JMSContainerConfig(jmsID, ka, null), options, parameters);
+			return createMqttContainer(
+					new JMSContainerConfig(createContainerID(parameters),
+							getKeepAlive(parameters, new Integer(MqttJMSServerContainer.DEFAULT_KEEPALIVE))),
+					getParameterValue(parameters, MQTTCONNECTOPTIONS_PARAM, MqttConnectOptions.class,
+							new MqttConnectOptions()),
+					parameters);
 		} catch (Exception e) {
 			return throwCreateException("Could not create mqtt container", e);
 		}

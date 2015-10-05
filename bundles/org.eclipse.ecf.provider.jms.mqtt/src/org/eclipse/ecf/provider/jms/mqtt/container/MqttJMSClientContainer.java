@@ -8,9 +8,6 @@
  ******************************************************************************/
 package org.eclipse.ecf.provider.jms.mqtt.container;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,18 +26,8 @@ public class MqttJMSClientContainer extends AbstractJMSClient {
 
 	public static class Instantiator extends AbstractMqttContainerInstantiator {
 
-		static List<String> exporters = new ArrayList<String>();
-		static Map<String, List<String>> importers = new HashMap<String, List<String>>();
-
-		static {
-			exporters.add(MQTT_CLIENT_NAME);
-			List<String> importersList = new ArrayList<String>();
-			importersList.add(MqttJMSServerContainer.MQTT_MANAGER_NAME);
-			importers.put(MQTT_CLIENT_NAME, importersList);
-		}
-
 		public Instantiator() {
-			super(exporters, importers);
+			super(MQTT_CLIENT_NAME, MqttJMSServerContainer.MQTT_MANAGER_NAME);
 		}
 
 		@Override
