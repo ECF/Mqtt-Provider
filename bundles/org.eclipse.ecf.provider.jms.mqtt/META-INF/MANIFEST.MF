@@ -24,4 +24,5 @@ Bundle-ClassPath: .,
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.ecf.provider.jms.mqtt.Activator
+Provide-Capability: osgi.remoteserviceadmin.distribution; configs:List<String>="ecf.jms.mqtt.manager,ecf.jms.mqtt.client"; version:Version=1.1 
 
