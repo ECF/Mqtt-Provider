@@ -245,29 +245,12 @@ More specifically:
    limitations under the License.
    </license>
 
+   <requires>
+      <import feature="org.eclipse.ecf.provider.jms.feature" version="2.4" match="compatible"/>
+   </requires>
+
    <plugin
          id="org.eclipse.ecf.provider.jms.mqtt"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.paho.client.mqttv3"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="javax.jms"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ecf.provider.jms"
          download-size="0"
          install-size="0"
          version="0.0.0"
