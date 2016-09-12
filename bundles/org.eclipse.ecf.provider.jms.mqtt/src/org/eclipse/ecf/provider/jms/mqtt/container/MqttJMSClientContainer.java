@@ -27,7 +27,7 @@ public class MqttJMSClientContainer extends AbstractJMSClient {
 	public static class Instantiator extends AbstractMqttContainerInstantiator {
 
 		public Instantiator() {
-			super(MQTT_CLIENT_NAME, MqttJMSServerContainer.MQTT_MANAGER_NAME);
+			super(MqttJMSServerContainer.MQTT_MANAGER_NAME, MqttJMSClientContainer.MQTT_CLIENT_NAME);
 		}
 
 		@Override
