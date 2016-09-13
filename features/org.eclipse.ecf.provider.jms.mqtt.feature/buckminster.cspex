@@ -8,6 +8,9 @@
 		<dependency name="org.eclipse.equinox.concurrent" componentType="osgi.bundle"/>
 		<dependency name="org.eclipse.jdt" componentType="eclipse.feature"/>
 		<dependency name="org.eclipse.ecf.osgi.services.feature" componentType="eclipse.feature"/>
+
+		<dependency name="org.eclipse.paho" componentType="osgi.bundle"/>
+
 <!--
 		<dependency name="org.eclipse.ecf.tests" componentType="osgi.bundle"/>
 		<dependency name="org.eclipse.ecf.tests.osgi.services.distribution" componentType="osgi.bundle"/>
