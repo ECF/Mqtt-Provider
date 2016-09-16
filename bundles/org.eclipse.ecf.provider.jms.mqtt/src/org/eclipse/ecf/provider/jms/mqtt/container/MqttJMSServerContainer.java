@@ -39,7 +39,7 @@ public class MqttJMSServerContainer extends AbstractJMSServer {
 
 		@Override
 		protected JMSID createContainerID(Map<String, ?> parameters) throws Exception {
-			return getJMSIDFromParameter(parameters, DEFAULT_SERVER_ID);
+			return getJMSIDFromParameter(parameters.get(ID_PARAM), DEFAULT_SERVER_ID);
 		}
 	}
 

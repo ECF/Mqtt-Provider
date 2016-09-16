@@ -41,6 +41,9 @@ public abstract class AbstractMqttContainerInstantiator extends AbstractJMSConta
 			throws ContainerCreateException {
 		String id = null;
 		if (parameters != null) {
+			if (parameters[0] instanceof Map)
+				return createInstance(description, (Map<String,?>) parameters[0]);
+			else	
 			for (int i = 0; i < parameters.length; i++)
 				if (parameters[i] instanceof String)
 					id = (String) parameters[i];

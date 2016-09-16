@@ -70,6 +70,7 @@ public class MqttChannel implements MqttCallback {
 
 	public synchronized void disconnect() {
 		if (this.client.isConnected()) {
+			this.client.setCallback(null);
 			try {
 				this.client.disconnect();
 				this.client.close();
