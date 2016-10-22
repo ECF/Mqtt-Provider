@@ -25,11 +25,13 @@ public class MqttJMSClientChannel extends AbstractJMSClientChannel implements Mq
 
 	private static final long serialVersionUID = -4250141332659030158L;
 
+	private int qos;
 	private MqttConnectOptions mqttConnectOptions;
 	private MqttChannel channel;
 
-	public MqttJMSClientChannel(ISynchAsynchEventHandler handler, int keepAlive, MqttConnectOptions options) {
+	public MqttJMSClientChannel(ISynchAsynchEventHandler handler, int keepAlive, int qos, MqttConnectOptions options) {
 		super(handler, keepAlive);
+		this.qos = qos;
 		this.mqttConnectOptions = options;
 	}
 
@@ -40,7 +42,7 @@ public class MqttJMSClientChannel extends AbstractJMSClientChannel implements Mq
 
 	@Override
 	protected Serializable setupJMS(JMSID targetID, Object data) throws ECFException {
-		this.channel = new MqttChannel(targetID, this.mqttConnectOptions, this);
+		this.channel = new MqttChannel(targetID, getLocalID(), this.mqttConnectOptions, this.qos, this);
 		return (Serializable) data;
 	}
 

@@ -30,9 +30,9 @@ public class MqttJMSServerContainer extends AbstractJMSServer {
 		}
 
 		@Override
-		protected IContainer createMqttContainer(JMSContainerConfig config, MqttConnectOptions options,
+		protected IContainer createMqttContainer(JMSContainerConfig config, MqttConnectOptions options, int qos,
 				Map<String, ?> parameters) throws Exception {
-			MqttJMSServerContainer server = new MqttJMSServerContainer(config, options);
+			MqttJMSServerContainer server = new MqttJMSServerContainer(config, options, qos);
 			server.start();
 			return server;
 		}
@@ -52,17 +52,24 @@ public class MqttJMSServerContainer extends AbstractJMSServer {
 		setConnection(null);
 	}
 
+	@Override
+	public void dispose() {
+		disconnect();
+		super.dispose();
+	}
 	private MqttConnectOptions mqttConnectOptions;
+	private int qos;
 
-	public MqttJMSServerContainer(JMSContainerConfig config, MqttConnectOptions connectOptions) {
+	public MqttJMSServerContainer(JMSContainerConfig config, MqttConnectOptions connectOptions, int qos) {
 		super(config);
 		this.mqttConnectOptions = connectOptions;
+		this.qos = qos;
 	}
 
 	@Override
 	public void start() throws ECFException {
 		final ISynchAsynchConnection connection = new MqttJMSServerChannel(this.getReceiver(),
-				getJMSContainerConfig().getKeepAlive(), mqttConnectOptions);
+				getJMSContainerConfig().getKeepAlive(), mqttConnectOptions, this.qos);
 		setConnection(connection);
 		connection.start();
 	}

@@ -31,9 +31,9 @@ public class MqttJMSClientContainer extends AbstractJMSClient {
 		}
 
 		@Override
-		protected IContainer createMqttContainer(JMSContainerConfig config, MqttConnectOptions options,
+		protected IContainer createMqttContainer(JMSContainerConfig config, MqttConnectOptions options, int qos,
 				Map<String, ?> parameters) throws Exception {
-			return new MqttJMSClientContainer(config, options);
+			return new MqttJMSClientContainer(config, options, qos);
 		}
 
 		@Override
@@ -42,16 +42,29 @@ public class MqttJMSClientContainer extends AbstractJMSClient {
 		}
 	}
 
+	private int qos;
 	private MqttConnectOptions options;
 
-	MqttJMSClientContainer(JMSContainerConfig config, MqttConnectOptions options) {
+	MqttJMSClientContainer(JMSContainerConfig config, MqttConnectOptions options, int qos) {
 		super(config);
 		this.options = options;
+		this.qos = qos;
 	}
 
 	@Override
 	protected ISynchAsynchConnection createConnection(ID targetID, Object data) throws ConnectionCreateException {
-		return new MqttJMSClientChannel(getReceiver(), getJMSContainerConfig().getKeepAlive(), options);
+		return new MqttJMSClientChannel(getReceiver(), getJMSContainerConfig().getKeepAlive(), this.qos, options);
 	}
 
+	@Override
+	public void disconnect() {
+		// TODO Auto-generated method stub
+		super.disconnect();
+	}
+	
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		super.dispose();
+	}
 }

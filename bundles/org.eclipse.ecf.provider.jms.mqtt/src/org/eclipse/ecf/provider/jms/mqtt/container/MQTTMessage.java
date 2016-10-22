@@ -15,7 +15,7 @@ import java.io.ObjectOutputStream;
 
 import javax.jms.JMSException;
 
-import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -37,7 +37,7 @@ public class MQTTMessage {
 		return data;
 	}
 
-	static void send(final MqttClient client, final String topic, byte[] message, String jmsCorrelationId)
+	static void send(final MqttAsyncClient client, final String topic, byte[] message, String jmsCorrelationId)
 			throws JMSException {
 		try {
 			ByteArrayOutputStream bouts = new ByteArrayOutputStream();

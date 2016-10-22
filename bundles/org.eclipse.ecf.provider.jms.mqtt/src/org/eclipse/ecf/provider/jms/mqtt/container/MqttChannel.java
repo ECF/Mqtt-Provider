@@ -10,16 +10,20 @@ package org.eclipse.ecf.provider.jms.mqtt.container;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import javax.jms.JMSException;
 
+import org.eclipse.ecf.core.identity.ID;
 import org.eclipse.ecf.core.util.ECFException;
 import org.eclipse.ecf.core.util.Trace;
 import org.eclipse.ecf.provider.jms.identity.JMSID;
 import org.eclipse.ecf.remoteservice.util.ObjectSerializationUtil;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -27,27 +31,33 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class MqttChannel implements MqttCallback {
 
 	private MqttChannelMessageHandler handler;
-	private MqttClient client;
+	private MqttAsyncClient client;
 	private String topic;
+	private ExecutorService executorService;
 
-	public MqttChannel(JMSID targetID, MqttConnectOptions options, MqttChannelMessageHandler handler)
+	public MqttChannel(JMSID targetID, ID localID, MqttConnectOptions options, int qos, MqttChannelMessageHandler handler)
 			throws ECFException {
 		try {
 			this.handler = handler;
-			this.client = new MqttClient(targetID.getBroker(), MqttClient.generateClientId());
+			this.client = new MqttAsyncClient(targetID.getBroker(), localID.getName(), null);
 			// Set callback
 			this.client.setCallback(this);
-			// Connect to broker with connectOpts
 			if (options == null)
-				this.client.connect();
-			else
-				this.client.connect(options);
+				options = new MqttConnectOptions();
+			// Connect to broker with connectOpts
+			this.client.connect(options).waitForCompletion(options.getConnectionTimeout()*1000);
 			this.topic = targetID.getTopicOrQueueName();
 			// Subscribe to topic
-			this.client.subscribe(topic);
+			this.client.subscribe(topic, qos);
 		} catch (MqttException e) {
-			throw new ECFException("MqttClient could not connect to broker at targetID=" + targetID.getName());
+			throw new ECFException("MqttClient could not connect to broker at targetID=" + targetID.getName(), e);
 		}
+		this.executorService = Executors.newSingleThreadExecutor(new ThreadFactory() {
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r,"Mqtt RemoteService Provider");
+				t.setDaemon(true);
+				return t;
+			}});
 	}
 
 	public synchronized boolean isConnected() {
@@ -78,6 +88,10 @@ public class MqttChannel implements MqttCallback {
 				e.printStackTrace();
 			}
 		}
+		if (this.executorService != null) {
+			this.executorService.shutdown();
+			this.executorService = null;
+		}
 	}
 
 	public void connectionLost(Throwable arg0) {
@@ -107,14 +121,19 @@ public class MqttChannel implements MqttCallback {
 					"handleMessageArrived.  Message=" + message + " is duplicate, so not processing");
 			return;
 		}
-		MQTTMessage m = MQTTMessage.receive(message.getPayload());
+		final MQTTMessage m = MQTTMessage.receive(message.getPayload());
 		if (m == null) {
 			Trace.exiting("org.eclipse.ecf.provider.jms.mqtt", "exiting", this.getClass(), "handleMessageArrived");
 			// XXX here is where the MqttMessage payload could be passed to some
 			// other interface
 			return;
-		} else
-			handler.handleMqttChannelMessage(m.getData(), m.getCorrelationId());
+		} else {
+			executorService.submit(new Runnable() {
+				public void run() {
+					handler.handleMqttChannelMessage(m.getData(), m.getCorrelationId());
+				}
+			});
+		}
 	}
 
 }

@@ -28,10 +28,11 @@ public class MqttJMSServerChannel extends AbstractJMSServerChannel implements Mq
 
 	private MqttChannel channel;
 
-	public MqttJMSServerChannel(ISynchAsynchEventHandler handler, int keepAlive, MqttConnectOptions options)
+	public MqttJMSServerChannel(ISynchAsynchEventHandler handler, int keepAlive, MqttConnectOptions options, int qos)
 			throws ECFException {
 		super(handler, keepAlive);
-		this.channel = new MqttChannel((JMSID) getLocalID(), options, this);
+		JMSID localID = (JMSID) getLocalID();
+		this.channel = new MqttChannel(localID, localID, options, qos, this);
 	}
 
 	@Override
