@@ -11,7 +11,7 @@ import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
 
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		// Build and register mqtt manager distribution provider
 		context.registerService(IRemoteServiceDistributionProvider.class,
 				new RemoteServiceDistributionProvider.Builder().setName(MqttJMSServerContainer.MQTT_MANAGER_NAME)
@@ -28,7 +28,6 @@ public class Activator implements BundleActivator {
 								MqttJMSClientContainer.class))
 						.build(),
 				null);
-
 	}
 
 	public void stop(BundleContext context) throws Exception {
