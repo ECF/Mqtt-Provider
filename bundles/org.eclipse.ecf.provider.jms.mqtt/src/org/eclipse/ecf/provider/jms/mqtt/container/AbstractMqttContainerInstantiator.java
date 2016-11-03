@@ -44,6 +44,15 @@ public abstract class AbstractMqttContainerInstantiator extends AbstractJMSConta
 		super(exporter, importer);
 	}
 
+	public AbstractMqttContainerInstantiator(List<String> exporterConfigs,
+			Map<String, List<String>> exporterConfigToImporterConfig) {
+		super(exporterConfigs, exporterConfigToImporterConfig);
+	}
+
+	public AbstractMqttContainerInstantiator(String exporter, List<String> importers) {
+		super(exporter, importers);
+	}
+
 	protected abstract IContainer createMqttContainer(JMSContainerConfig config, MqttConnectOptions options,
 			int clientqos, Map<String, ?> parameters) throws Exception;
 
