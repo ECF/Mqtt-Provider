@@ -30,9 +30,10 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class MqttChannel implements MqttCallbackExtended {
 
+	private JMSID targetID;
+	private String topic;
 	private MqttChannelMessageHandler handler;
 	private MqttAsyncClient client;
-	private String topic;
 	private int qos;
 	private ExecutorService executorService;
 
@@ -46,6 +47,7 @@ public class MqttChannel implements MqttCallbackExtended {
 			}
 		});
 		try {
+			this.targetID = targetID;
 			this.topic = targetID.getTopicOrQueueName();
 			this.handler = handler;
 			this.qos = qos;
@@ -95,7 +97,7 @@ public class MqttChannel implements MqttCallbackExtended {
 	}
 
 	public void connectionLost(Throwable arg0) {
-		this.handler.connectionLost(this.topic, arg0);
+		this.handler.connectionLost(this.targetID.getBroker(), arg0);
 	}
 
 	public void deliveryComplete(IMqttDeliveryToken arg0) {

@@ -78,10 +78,10 @@ public class MqttJMSClientChannel extends AbstractJMSClientChannel implements Mq
 		super.handleMessage(data, correlation);
 	}
 
-	public void connectionLost(String topic, Throwable e) {
+	public void connectionLost(String broker, Throwable e) {
 		MqttChannel c = this.channel;
 		if (c != null) {
-			System.out.println("connectionLost on topic="+topic+";exception="+e);
+			System.out.println("connectionLost on broker=" + broker + ";exception=" + e);
 			if (e != null)
 				e.printStackTrace();
 		}
