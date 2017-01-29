@@ -67,15 +67,4 @@ public class MqttJMSClientContainer extends AbstractJMSClient {
 		return new MqttJMSClientChannel(getReceiver(), getJMSContainerConfig().getKeepAlive(), this.qos, options);
 	}
 
-	@Override
-	public void disconnect() {
-		// TODO Auto-generated method stub
-		super.disconnect();
-	}
-	
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		super.dispose();
-	}
 }

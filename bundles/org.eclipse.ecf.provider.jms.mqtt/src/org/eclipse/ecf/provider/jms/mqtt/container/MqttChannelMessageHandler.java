@@ -11,4 +11,6 @@ package org.eclipse.ecf.provider.jms.mqtt.container;
 public interface MqttChannelMessageHandler {
 
 	public void handleMqttChannelMessage(byte[] data, String correlation);
+
+	public void connectionLost(String topic, Throwable arg0);
 }

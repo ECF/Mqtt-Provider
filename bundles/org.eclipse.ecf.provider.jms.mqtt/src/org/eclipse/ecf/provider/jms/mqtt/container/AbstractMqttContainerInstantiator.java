@@ -34,6 +34,7 @@ public abstract class AbstractMqttContainerInstantiator extends AbstractJMSConta
 	public static final String CONNECTIONTIMEOUT_P = "connectiontimeout";
 	public static final String KEEPALIVEINTERVAL_P = "keepaliveinterval";
 	public static final String MAXINFLIGHT_P = "maxinflight";
+	public static final String AUTORECONNECT_P = "autoreconnect";
 	public static final String USERNAME_P = "username";
 	public static final String PASSWORD_P = "password";
 	public static final String SOCKETFACTORY_P = "socketfactory";
@@ -99,6 +100,8 @@ public abstract class AbstractMqttContainerInstantiator extends AbstractJMSConta
 			Integer ct = getMqttParameterValue(parameters, CONNECTIONTIMEOUT_P, Integer.class, null);
 			if (ct != null)
 				options.setKeepAliveInterval(ct);
+			Boolean autoReconnect = getMqttParameterValue(parameters, AUTORECONNECT_P, Boolean.class, Boolean.TRUE);
+			options.setAutomaticReconnect(autoReconnect);
 			Integer ka = getMqttParameterValue(parameters, KEEPALIVEINTERVAL_P, Integer.class, null);
 			if (ka != null)
 				options.setKeepAliveInterval(ka);
@@ -119,7 +122,7 @@ public abstract class AbstractMqttContainerInstantiator extends AbstractJMSConta
 			Properties properties = getMqttParameterValue(parameters, SSLPROPERTIES_P, Properties.class, null);
 			if (properties != null)
 				options.setSSLProperties(properties);
-			Integer clientqos = getMqttParameterValue(parameters, MAXINFLIGHT_P, Integer.class, 1);
+			Integer clientqos = getMqttParameterValue(parameters, CLIENTQOS_P, Integer.class, 0);
 			return createMqttContainer(
 					new JMSContainerConfig(createContainerID(parameters),
 							getKeepAlive(parameters, new Integer(MqttJMSServerContainer.DEFAULT_KEEPALIVE))),
