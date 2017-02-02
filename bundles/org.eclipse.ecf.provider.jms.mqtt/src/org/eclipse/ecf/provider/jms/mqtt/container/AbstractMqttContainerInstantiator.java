@@ -82,11 +82,33 @@ public abstract class AbstractMqttContainerInstantiator extends AbstractJMSConta
 	protected abstract JMSID createContainerID(Map<String, ?> parameters) throws Exception;
 
 	private <T> T getMqttParameterValue(Map<String, ?> parameters, String param, Class<T> clazz, T def) {
-		T result = getParameterValue(parameters, param, clazz, def);
-		if (result != null)
+		T result = getParameterValue(parameters, param, clazz, null);
+		if (result != null) 
 			return result;
-		else
-			return getParameterValue(parameters, "." + param, clazz, def);
+		else {
+			// If Clazz is String, then we just return default
+			if (clazz.equals(String.class))
+				return def;
+			else {
+				String strValue = getParameterValue(parameters, param, String.class,
+						(def == null) ? null : def.toString());
+				if (strValue != null) {
+					try {
+						if (clazz.equals(Integer.class) || clazz.equals(int.class))
+							result = clazz.cast(Integer.valueOf(strValue));
+						else if (clazz.equals(Double.class) || clazz.equals(double.class))
+							result = clazz.cast(Double.valueOf(strValue));
+						else if (clazz.equals(Short.class) || clazz.equals(short.class))
+							result = clazz.cast(Short.valueOf(strValue));
+						else if (clazz.equals(Long.class) || clazz.equals(long.class))
+							result = clazz.cast(Long.valueOf(strValue));
+						else if (clazz.equals(Boolean.class) || clazz.equals(boolean.class))
+							result = clazz.cast(Boolean.valueOf(strValue));
+					} catch (Exception e) {}
+				}
+				return result;
+			}
+		}
 	}
 
 	@Override
