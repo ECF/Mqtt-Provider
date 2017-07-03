@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="MQTT Provider Neon Target" sequenceNumber="32">
+<?pde version="3.8"?><target name="MQTT Provider Neon Target" sequenceNumber="33">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.license.feature.group" version="1.0.1.v20140414-1359"/>
@@ -30,7 +30,7 @@
 <repository location="http://download.eclipse.org/paho/releases/1.1.1/Java"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.ecf.provider.jms.feature.feature.group" version="2.4.0.201706162014"/>
+<unit id="org.eclipse.ecf.provider.jms.feature.feature.group" version="2.4.0.201707031257"/>
 <repository location="https://raw.githubusercontent.com/ECF/JMS/master/features/org.eclipse.ecf.provider.jms.feature/build"/>
 </location>
 </locations>
