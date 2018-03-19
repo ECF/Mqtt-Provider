@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.ecf.core.ContainerTypeDescription;
 import org.eclipse.ecf.core.IContainer;
 import org.eclipse.ecf.core.identity.ID;
 import org.eclipse.ecf.provider.comm.ConnectionCreateException;
@@ -51,7 +52,7 @@ public class MqttJMSClientContainer extends AbstractJMSClient {
 		}
 
 		@Override
-		protected JMSID createContainerID(Map<String, ?> parameters) throws Exception {
+		protected JMSID createContainerID(ContainerTypeDescription description, Map<String, ?> parameters) throws Exception {
 			return getJMSIDFromParameter(parameters, UUID.randomUUID().toString());
 		}
 	}

@@ -8,6 +8,8 @@
  ******************************************************************************/
 package org.eclipse.ecf.provider.jms.mqtt.container;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,9 +22,11 @@ import org.eclipse.ecf.core.ContainerCreateException;
 import org.eclipse.ecf.core.ContainerTypeDescription;
 import org.eclipse.ecf.core.IContainer;
 import org.eclipse.ecf.core.identity.ID;
+import org.eclipse.ecf.core.provider.ContainerIntentException;
 import org.eclipse.ecf.provider.jms.container.AbstractJMSContainerInstantiator;
 import org.eclipse.ecf.provider.jms.container.JMSContainerConfig;
 import org.eclipse.ecf.provider.jms.identity.JMSID;
+import org.eclipse.ecf.remoteservice.Constants;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 public abstract class AbstractMqttContainerInstantiator extends AbstractJMSContainerInstantiator {
@@ -79,7 +83,7 @@ public abstract class AbstractMqttContainerInstantiator extends AbstractJMSConta
 		return super.createInstance(description, new Object[] { params });
 	}
 
-	protected abstract JMSID createContainerID(Map<String, ?> parameters) throws Exception;
+	protected abstract JMSID createContainerID(ContainerTypeDescription description, Map<String, ?> parameters) throws Exception;
 
 	private <T> T getMqttParameterValue(Map<String, ?> parameters, String param, Class<T> clazz, T def) {
 		T result = getParameterValue(parameters, param, clazz, null);
@@ -106,11 +110,26 @@ public abstract class AbstractMqttContainerInstantiator extends AbstractJMSConta
 							result = clazz.cast(Boolean.valueOf(strValue));
 					} catch (Exception e) {}
 				}
-				return result;
+				return def;
 			}
 		}
 	}
 
+	@Override
+	protected boolean supportsOSGIAsyncIntent(ContainerTypeDescription description) {
+		return true;
+	}
+	
+	protected void checkJMSIDForIntents(ContainerTypeDescription description, JMSID id, Map<String,?> properties) throws ContainerIntentException {
+		URI uri = null;
+		try {
+			uri = new URI(id.getName());
+		} catch (URISyntaxException e) {
+			throw new ContainerIntentException(Constants.OSGI_BASIC_INTENT, "Couldn't create URI from JMSID="+id.getName(),e);
+		}
+		checkOSGIIntents(description, uri, properties);
+	}
+	
 	@Override
 	public IContainer createInstance(ContainerTypeDescription description, Map<String, ?> parameters)
 			throws ContainerCreateException {
@@ -146,10 +165,12 @@ public abstract class AbstractMqttContainerInstantiator extends AbstractJMSConta
 				options.setSSLProperties(properties);
 			Integer clientqos = getMqttParameterValue(parameters, CLIENTQOS_P, Integer.class, 0);
 			return createMqttContainer(
-					new JMSContainerConfig(createContainerID(parameters),
+					new JMSContainerConfig(createContainerID(description, parameters),
 							getKeepAlive(parameters, new Integer(MqttJMSServerContainer.DEFAULT_KEEPALIVE))),
 					options, clientqos, parameters);
 		} catch (Exception e) {
+			if (e instanceof ContainerIntentException) 
+				throw (ContainerIntentException) e;
 			return throwCreateException("Could not create mqtt container", e);
 		}
 	}

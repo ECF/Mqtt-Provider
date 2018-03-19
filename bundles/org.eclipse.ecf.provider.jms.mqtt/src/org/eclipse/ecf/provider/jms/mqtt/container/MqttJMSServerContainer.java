@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.ecf.core.ContainerTypeDescription;
 import org.eclipse.ecf.core.IContainer;
 import org.eclipse.ecf.core.util.ECFException;
 import org.eclipse.ecf.provider.comm.ISynchAsynchConnection;
@@ -52,8 +53,10 @@ public class MqttJMSServerContainer extends AbstractJMSServer {
 		}
 
 		@Override
-		protected JMSID createContainerID(Map<String, ?> parameters) throws Exception {
-			return getJMSIDFromParameter(parameters.get(ID_PARAM), DEFAULT_SERVER_ID);
+		protected JMSID createContainerID(ContainerTypeDescription description, Map<String, ?> parameters) throws Exception {
+			JMSID id = getJMSIDFromParameter(parameters.get(ID_PARAM), DEFAULT_SERVER_ID);
+			checkJMSIDForIntents(description, id, parameters);
+			return id;
 		}
 	}
 
