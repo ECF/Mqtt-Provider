@@ -6,13 +6,13 @@
 <repository location="http://download.eclipse.org/cbi/updates/license/1.0.1.v20140414-1359"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.edit.ui.feature.group" version="2.13.0.v20170609-0928"/>
-<unit id="org.eclipse.emf.edit.ui.source.feature.group" version="2.13.0.v20170609-0928"/>
-<unit id="org.eclipse.pde.feature.group" version="3.13.2.v20171130-0510"/>
-<unit id="org.eclipse.pde.source.feature.group" version="3.13.2.v20171130-0510"/>
-<unit id="org.eclipse.platform.feature.group" version="4.7.2.v20171130-0510"/>
-<unit id="org.eclipse.platform.source.feature.group" version="4.7.2.v20171130-0510"/>
-<repository location="http://download.eclipse.org/releases/oxygen"/>
+<unit id="org.eclipse.emf.edit.ui.feature.group" version="2.14.0.v20180213-0527"/>
+<unit id="org.eclipse.emf.edit.ui.source.feature.group" version="2.14.0.v20180213-0527"/>
+<unit id="org.eclipse.pde.feature.group" version="3.13.100.v20180308-0630"/>
+<unit id="org.eclipse.pde.source.feature.group" version="3.13.100.v20180308-0630"/>
+<unit id="org.eclipse.platform.feature.group" version="4.8.0.v20180308-0630"/>
+<unit id="org.eclipse.platform.source.feature.group" version="4.8.0.v20180308-0630"/>
+<repository location="http://download.eclipse.org/releases/photon"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="javax.jms" version="1.1.0.v201205091237"/>
@@ -29,10 +29,10 @@
 <repository location="https://raw.githubusercontent.com/ECF/JMS/master/build"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.ecf.remoteservice.sdk.examples.feature.feature.group" version="1.0.100.v20180402-2025"/>
-<unit id="org.eclipse.ecf.remoteservice.sdk.examples.feature.source.feature.group" version="1.0.100.v20180402-2025"/>
-<unit id="org.eclipse.ecf.remoteservice.sdk.feature.feature.group" version="3.14.0.v20180412-1942"/>
-<unit id="org.eclipse.ecf.remoteservice.sdk.feature.source.feature.group" version="3.14.0.v20180412-1942"/>
+<unit id="org.eclipse.ecf.remoteservice.sdk.examples.feature.feature.group" version="1.0.100.v20180502-2137"/>
+<unit id="org.eclipse.ecf.remoteservice.sdk.examples.feature.source.feature.group" version="1.0.100.v20180502-2137"/>
+<unit id="org.eclipse.ecf.remoteservice.sdk.feature.feature.group" version="3.14.0.v20180426-2032"/>
+<unit id="org.eclipse.ecf.remoteservice.sdk.feature.source.feature.group" version="3.14.0.v20180426-2032"/>
 <repository location="http://download.eclipse.org/rt/ecf/snapshot/site.p2"/>
 </location>
 </locations>
