@@ -24,7 +24,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 public class MqttJMSServerContainer extends AbstractJMSServer {
 
-	public static final String DEFAULT_SERVER_ID = "tcp://iot.eclipse.org:1883/exampleTopic";
+	public static final String DEFAULT_SERVER_ID = "tcp://mqtt.eclipse.org:1883/exampleRemoteServicesTopic";
 	public static final String MQTT_MANAGER_NAME = "ecf.jms.mqtt.manager";
 
 	public static class Instantiator extends AbstractMqttContainerInstantiator {
