@@ -1,6 +1,6 @@
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0"	name="ecf-remoteservices-mqtt-1.4.0">
 	
-    <feature name="ecf-rs-distribution-mqtt" version="1.4.0" description="ECF Mqtt Distribution Provider. See https://github.com/ECF/Mqtt-Provider">
+    <feature name="ecf-rs-distribution-mqtt" version="1.5.0" description="ECF Mqtt Distribution Provider. See https://github.com/ECF/Mqtt-Provider">
             <feature>ecf-rs-distribution-jms-core</feature>
             <bundle>https://raw.githubusercontent.com/ECF/Mqtt-Provider/master/build/plugins/org.eclipse.paho.client.mqttv3_1.2.1.jar</bundle>
             <bundle>https://raw.githubusercontent.com/ECF/Mqtt-Provider/master/build/plugins/org.eclipse.ecf.provider.jms.mqtt_1.3.1.201908132239.jar</bundle>
